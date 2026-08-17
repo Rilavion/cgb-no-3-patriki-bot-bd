@@ -1,0 +1,11 @@
+import "dotenv/config";
+import bcrypt from "bcryptjs";
+import pg from "pg";
+const email=process.argv[2]||process.env.CGB_USER_EMAIL;
+const password=process.argv[3]||process.env.CGB_USER_PASSWORD;
+if(!process.env.DATABASE_URL||!email||!password)throw new Error("Usage: node set-user-password.mjs email@example.org NEW_PASSWORD");
+if(password.length<8)throw new Error("Password must contain at least 8 characters");
+const sslMode=String(process.env.PGSSL||"require").toLowerCase();
+const pool=new pg.Pool({connectionString:process.env.DATABASE_URL,ssl:sslMode==="disable"?undefined:{rejectUnauthorized:sslMode!=="no-verify"}});
+const hash=await bcrypt.hash(password,12);const {rowCount}=await pool.query("update public.users set password_hash=$1,password_reset_required=false,disabled=false where lower(email)=lower($2)",[hash,email]);await pool.end();
+if(!rowCount)throw new Error("User not found");console.log("Password updated for",email);

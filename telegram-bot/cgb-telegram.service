@@ -1,0 +1,22 @@
+[Unit]
+Description=CGB 3 Telegram notifications
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=cgbtelegram
+Group=cgbtelegram
+WorkingDirectory=/opt/cgb-telegram-bot
+EnvironmentFile=/etc/cgb-telegram-bot.env
+ExecStart=/opt/cgb-telegram-bot/.venv/bin/python /opt/cgb-telegram-bot/telegram_worker.py
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/cgb-telegram-bot
+
+[Install]
+WantedBy=multi-user.target

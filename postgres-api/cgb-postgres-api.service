@@ -1,0 +1,22 @@
+[Unit]
+Description=CGB No.3 PostgreSQL API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=cgb-api
+Group=cgb-api
+WorkingDirectory=/opt/cgb-postgres-api
+EnvironmentFile=/etc/cgb-postgres-api.env
+ExecStart=/usr/bin/node /opt/cgb-postgres-api/src/server.js
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/cgb-storage
+
+[Install]
+WantedBy=multi-user.target

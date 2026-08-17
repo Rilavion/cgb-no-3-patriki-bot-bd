@@ -1,0 +1,19 @@
+{
+  "name": "cgb-postgres-migration",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "export": "node export-supabase.mjs",
+    "import": "node import-postgres.mjs",
+    "verify": "node verify-postgres.mjs",
+    "set-password": "node set-user-password.mjs",
+    "check:site": "node check-site.mjs"
+  },
+  "engines": {"node": ">=20.11.0"},
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^17.2.1",
+    "pg": "^8.16.3"
+  }
+}
